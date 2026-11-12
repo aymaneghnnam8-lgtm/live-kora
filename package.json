@@ -1,0 +1,19 @@
+{
+  "name": "live-kora",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Live football scores powered by API-Football",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node --test server/logic.test.js server/monitor.test.js"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2"
+  }
+}

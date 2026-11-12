@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090B10">
+  <title>إدارة المراقبة · دار الكورة</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="mark" aria-hidden="true"></span>
+      <span><strong>دار الكورة</strong><small>مراقبة المباريات</small></span>
+    </a>
+    <nav class="nav" aria-label="التنقل">
+      <a href="/">الرئيسية</a>
+    </nav>
+  </header>
+  <main id="main" class="shell">
+    <p class="sync" id="sync" aria-live="polite">جارٍ التحقق من الجلسة…</p>
+    <section id="login" class="panel login-box" hidden>
+      <h2>دخول الإدارة</h2>
+      <p>أدخل رمز الإدارة المحفوظ على الخادم. الرمز لا يُخزن في الصفحة.</p>
+      <form id="login-form">
+        <label class="date-label" for="token">رمز الإدارة</label>
+        <input id="token" name="token" type="password" autocomplete="current-password" required>
+        <p class="section-error" id="login-error"></p>
+        <button class="sync-btn" type="submit">دخول</button>
+      </form>
+    </section>
+    <section id="dashboard" hidden>
+      <div class="admin-actions">
+        <button class="sync-btn" id="start" type="button">تشغيل</button>
+        <button class="sync-btn" id="stop" type="button">إيقاف</button>
+        <button class="sync-btn" id="restart" type="button">إعادة التشغيل</button>
+        <button class="sync-btn" id="logout" type="button">خروج</button>
+      </div>
+      <section class="panel">
+        <h2>حالة البوت</h2>
+        <p id="state-line"></p>
+      </section>
+      <section class="panel">
+        <h2>آخر الدورات</h2>
+        <div class="table-wrap"><table class="admin-table" id="runs"></table></div>
+      </section>
+      <section class="panel">
+        <h2>آخر التغييرات</h2>
+        <div class="table-wrap"><table class="admin-table" id="changes"></table></div>
+      </section>
+    </section>
+  </main>
+  <script type="module" src="/js/admin.js"></script>
+</body>
+</html>

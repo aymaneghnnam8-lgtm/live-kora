@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090B10">
+  <title>دار الكورة</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <a class="skip" href="#main">تخطَّ إلى المباريات</a>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="mark" aria-hidden="true"></span>
+      <span><strong>دار الكورة</strong><small>نتائج بتوقيت المغرب</small></span>
+    </a>
+    <nav class="nav" aria-label="التنقل الرئيسي">
+      <a href="/" aria-current="page">الرئيسية</a>
+      <a href="/?status=live">مباشر</a>
+      <a href="/leagues.html">البطولات</a>
+      <a href="/#today">الروزنامة</a>
+      <a href="/leagues.html">الترتيب</a>
+      <a href="/news.html">الأخبار</a>
+    </nav>
+    <label class="search">
+      <span class="sr-only">بحث</span>
+      <input id="find" type="search" placeholder="فريق أو بطولة" autocomplete="off">
+    </label>
+  </header>
+  <div class="dashboard">
+    <aside class="side">
+      <h2>البطولات</h2>
+      <div class="chips" id="chips" aria-label="تصفية البطولات"></div>
+    </aside>
+    <main id="main">
+      <p class="sync" id="sync" aria-live="polite">جارٍ التحقق من واجهة المباريات…</p>
+      <div class="daybar" id="today">
+        <div class="seg" id="days" role="tablist" aria-label="يوم المباريات"></div>
+        <label class="date-label" for="date">التاريخ<input id="date" type="date"></label>
+        <button class="sync-btn" id="refresh" type="button" hidden>تحديث</button>
+      </div>
+      <div class="chips" id="state" role="tablist" aria-label="حالة المباريات"></div>
+      <p class="window" id="window"></p>
+      <div id="notice"></div>
+      <section id="live" class="live-section" aria-labelledby="live-title" hidden></section>
+      <div id="board" class="board"><p class="loading">جارٍ تحميل المباريات…</p></div>
+    </main>
+    <aside class="side side-right">
+      <section>
+        <h2>مباريات مختارة</h2>
+        <div id="featured"></div>
+      </section>
+      <section>
+        <h2>الترتيب</h2>
+        <nav id="side-standings" class="rail-links" aria-label="ترتيب البطولات"></nav>
+      </section>
+      <section>
+        <h2>فرق بارزة</h2>
+        <div id="side-teams" class="rail-teams"></div>
+      </section>
+    </aside>
+  </div>
+  <footer class="foot shell">
+    <p>النتائج من API-Football عبر خادم الموقع. أسماء الأندية تُعرض كما يرسلها المصدر، ومفتاح الواجهة لا يصل إلى المتصفح.</p>
+  </footer>
+  <script type="module" src="/js/home.js"></script>
+</body>
+</html>
