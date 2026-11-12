@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import {
   addCalendarDays,
   bucket,
@@ -25,11 +24,11 @@ import {
   summarizeEvents,
 } from "./logic.js";
 import { createCache } from "./cache.js";
+import { dataDir, root } from "./paths.js";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const envPath = path.join(root, ".env");
 dotenv.config({ path: envPath, override: true });
-const cache = createCache(path.join(root, "data", "cache.json"));
+const cache = createCache(path.join(dataDir, "cache.json"));
 const BASE = "https://v3.football.api-sports.io";
 
 let chain = Promise.resolve();

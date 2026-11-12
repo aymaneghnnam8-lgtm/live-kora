@@ -1,22 +1,21 @@
 import dotenv from "dotenv";
 import express from "express";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { createAdminAuth, readCookie, sessionCookie } from "./admin-auth.js";
 import { getBoard, getCompetition, getDay, getMatch, hasQuotaRoom, publicStatus, readFixture, syncLiveFixtures } from "./football.js";
 import { parseLeague } from "./logic.js";
 import { createMonitor } from "./monitor.js";
 import { getNews } from "./news.js";
+import { dataDir, root } from "./paths.js";
 import { openStore } from "./store.js";
 import { syncLive } from "./sync-live.js";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const envPath = path.join(root, ".env");
 const envResult = dotenv.config({ path: envPath, override: true });
 
 const app = express();
 const port = Number(process.env.PORT || 4173);
-const store = openStore(path.join(root, "data", "bot.sqlite"));
+const store = openStore(path.join(dataDir, "bot.sqlite"));
 const auth = createAdminAuth();
 const monitor = createMonitor({
   store,
@@ -254,29 +253,33 @@ function sendFailure(res, error) {
   });
 }
 
-const server = app.listen(port, () => {
-  const keyReady = Boolean(process.env.API_FOOTBALL_KEY?.trim());
-  console.log(`Live Kora running at http://localhost:${port}`);
-  console.log(`Env file: ${envPath} (${envResult.error ? "not loaded" : "loaded"})`);
-  console.log(`API_FOOTBALL_KEY configured: ${keyReady}`);
-  console.log(`ADMIN_TOKEN configured: ${auth.configured()}`);
-  monitor.startIfDesired();
-});
+if (!process.env.VERCEL) {
+  const server = app.listen(port, () => {
+    const keyReady = Boolean(process.env.API_FOOTBALL_KEY?.trim());
+    console.log(`Live Kora running at http://localhost:${port}`);
+    console.log(`Env file: ${envPath} (${envResult.error ? "not loaded" : "loaded"})`);
+    console.log(`API_FOOTBALL_KEY configured: ${keyReady}`);
+    console.log(`ADMIN_TOKEN configured: ${auth.configured()}`);
+    monitor.startIfDesired();
+  });
 
-server.on("error", (error) => {
-  console.error(error.message);
-  process.exit(1);
-});
+  server.on("error", (error) => {
+    console.error(error.message);
+    process.exit(1);
+  });
 
-let closing = false;
-function shutdown(signal) {
-  if (closing) return;
-  closing = true;
-  console.log(`[bot] ${new Date().toISOString()} ${signal} received, releasing the lock`);
-  monitor.release();
-  server.close(() => process.exit(0));
-  setTimeout(() => process.exit(0), 1500).unref();
+  let closing = false;
+  function shutdown(signal) {
+    if (closing) return;
+    closing = true;
+    console.log(`[bot] ${new Date().toISOString()} ${signal} received, releasing the lock`);
+    monitor.release();
+    server.close(() => process.exit(0));
+    setTimeout(() => process.exit(0), 1500).unref();
+  }
+
+  process.on("SIGINT", () => shutdown("SIGINT"));
+  process.on("SIGTERM", () => shutdown("SIGTERM"));
 }
 
-process.on("SIGINT", () => shutdown("SIGINT"));
-process.on("SIGTERM", () => shutdown("SIGTERM"));
+export default app;
